@@ -1,0 +1,6 @@
+{
+  "name": "Pociato",
+  "description": "Artisanal Pizza & Soulful Coffee in an industrial-chic haven",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
