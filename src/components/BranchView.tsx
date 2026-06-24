@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BRANCHES } from '../data';
 import { TableReservation } from '../types';
 import { MapPin, Phone, Calendar, Clock, Users, Coffee, Sparkles, CheckCircle2, Activity } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 
 export default function BranchView({ experienceLevel = 1 }: { experienceLevel?: 1 | 2 | 3 }) {
   const [formData, setFormData] = useState({

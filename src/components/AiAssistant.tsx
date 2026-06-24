@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Bot, X, Send, Sparkles } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 
 export default function AiAssistant({ experienceLevel }: { experienceLevel: 1 | 2 | 3 }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -46,29 +46,24 @@ export default function AiAssistant({ experienceLevel }: { experienceLevel: 1 | 
 
   return (
     <>
-      <AnimatePresence>
-        {!isOpen && (
+        {!isOpen ? (
           <motion.button
             key="ai-assistant-toggle"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
             onClick={() => setIsOpen(true)}
             className="fixed bottom-6 right-6 p-4 rounded-full bg-gradient-to-r from-burgundy to-espresso text-white shadow-[0_8px_30px_rgba(139,15,21,0.5)] border border-white/20 z-40 hover:scale-110 active:scale-95 transition-all group"
           >
             <Sparkles className="w-5 h-5 absolute top-2 right-2 text-caramel opacity-0 group-hover:opacity-100 transition-opacity" />
             <Bot className="w-6 h-6" />
           </motion.button>
-        )}
-      </AnimatePresence>
+        ) : null}
 
-      <AnimatePresence>
-        {isOpen && (
+        {isOpen ? (
           <motion.div
             key="ai-assistant-panel"
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
             className="fixed bottom-6 right-6 w-[350px] h-[500px] bg-black/85 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden"
           >
             {/* Header */}
@@ -136,8 +131,7 @@ export default function AiAssistant({ experienceLevel }: { experienceLevel: 1 | 
               </div>
             </form>
           </motion.div>
-        )}
-      </AnimatePresence>
+        ) : null}
     </>
   );
 }

@@ -45,6 +45,14 @@
     box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
   }
 
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+
   /* Custom Dotted Connector for Bistro style */
   .dotted-connector {
     flex-grow: 1;

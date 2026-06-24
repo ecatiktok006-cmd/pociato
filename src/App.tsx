@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import MenuBook from './components/MenuBook';
-import MenuListOldStyle from './components/MenuListOldStyle';
+import LevelOneMenu from './components/LevelOneMenu';
+import MenuFlipBook from './components/MenuFlipBook';
 import MenuGrids from './components/MenuGrids';
 import BranchView from './components/BranchView';
+import BranchAvailable from './components/BranchAvailable';
 import AboutView from './components/AboutView';
 import ReviewSection from './components/ReviewSection';
 import CartDrawer from './components/CartDrawer';
@@ -226,117 +228,35 @@ export default function App() {
               </div>
             </div>
 
-            {/* Content: Opened physical Book Section / Old Style Menu List */}
+            {/* Main Menu Render based on level */}
             {experienceLevel === 1 ? (
               <section 
-                id="old-menu-section" 
-                className="py-16 md:py-24 px-4 bg-[#fffcf7] relative z-15 scroll-mt-20"
+                id="level-1-menu-section" 
+                className="py-16 md:py-24 px-4 bg-white relative z-15 scroll-mt-20"
               >
-                <MenuListOldStyle items={MENU_ITEMS} onSelectItem={setSelectedCustomizeItem} />
+                <LevelOneMenu items={MENU_ITEMS} onSelectItem={setSelectedCustomizeItem} />
+              </section>
+            ) : experienceLevel === 2 ? (
+              <section 
+                id="level-2-menu-section" 
+                className="py-16 md:py-24 px-4 md:px-12 bg-[#1a0e06] relative z-15 scroll-mt-20"
+              >
+                <MenuGrids items={MENU_ITEMS} onSelectItem={setSelectedCustomizeItem} onQuickAdd={handleQuickAdd} />
               </section>
             ) : (
               <section 
                 id="book-menu-section" 
                 className="pt-28 md:pt-48 pb-16 md:pb-28 px-4 md:px-12 bg-[#36050a] relative z-15 scroll-mt-20"
               >
-                {/* Outer ivory/cream rounded card matching mockup exactly */}
-                <div className="max-w-6xl mx-auto bg-[#fcf6ee] rounded-[32px] md:rounded-[64px] shadow-2xl p-4 md:p-12 relative z-10 border border-cream/10">
-                  <MenuBook items={MENU_ITEMS} onSelectItem={setSelectedCustomizeItem} />
+                {/* 3D Flip Book */}
+                <div className="max-w-6xl mx-auto relative z-10 flex justify-center">
+                  <MenuFlipBook items={MENU_ITEMS} onSelectItem={setSelectedCustomizeItem} />
                 </div>
               </section>
             )}
 
-            {/* Content: Dedicated Coffee Frappe Menu Section as requested */}
-            <section 
-              id="coffee-frappes-section" 
-              className="py-12 md:py-16 px-4 md:px-12 bg-cover bg-center bg-no-repeat relative overflow-hidden text-white"
-              style={{ backgroundImage: "url('/frappe.jpg')" }}
-            >
-              {/* Perfect dark coffee ambient overlay to subtly blend without hiding the image */}
-              <div className="absolute inset-0 bg-gradient-to-b from-[#1a0104]/70 via-[#2f0409]/60 to-[#120002]/80 z-0"></div>
-
-              {/* Radial overlay to match the high-end vignette look in the mockup photo */}
-              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.1)_0%,rgba(0,0,0,0.7)_100%)] pointer-events-none z-0"></div>
-
-              <div id="frappes-wrapper-card" className="max-w-6xl mx-auto relative z-10 flex flex-col items-center">
-                
-                {/* Brand Header */}
-                <div className="text-center mb-6 select-none">
-                  <span className="text-[10px] md:text-xs font-sans uppercase tracking-[0.3em] font-medium text-white/50 block mb-1">
-                    POCIATO
-                  </span>
-                  <h2 
-                    style={{ fontFamily: 'var(--font-marker)' }} 
-                    className="text-4xl md:text-[64px] font-black uppercase tracking-wider text-white select-none leading-none drop-shadow-[0_4px_8px_rgba(0,0,0,0.85)]"
-                  >
-                    FRAPPE
-                  </h2>
-                </div>
-
-                {/* The beautiful 3 items descriptions as seen in the mockup, laid out beautifully in a compact layout */}
-                <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl px-2 mt-2">
-                  {[
-                    {
-                      num: "1",
-                      id: "coffee-caramel-frappe",
-                      name: "Caramel Frappe Coffee",
-                      price: "15",
-                      description: "Espresso blended with fresh milk, caramel sauce and frappe powder over ice until smooth and creamy. Topped with whipped cream and an extra drizzle of caramel for an indulgent finish."
-                    },
-                    {
-                      num: "2",
-                      id: "coffee-chocolate-frappe",
-                      name: "Belgian Chocolate Frappe",
-                      price: "15",
-                      description: "Premium cocoa powder blended with milk, sugar and ice to create a rich, creamy texture. Deep chocolate flavour with a refreshing icy finish."
-                    },
-                    {
-                      num: "3",
-                      id: "coffee-matcha-frappe",
-                      name: "Matcha Frappe",
-                      price: "15",
-                      description: "Bold matcha blended with frappe powder, fresh milk, sugar and ice. Smooth, creamy and perfectly chilled for a refreshing treat."
-                    }
-                  ].map((frappe) => {
-                    const fullItem = MENU_ITEMS.find(item => item.id === frappe.id);
-                    return (
-                      <div 
-                        key={frappe.id}
-                        id={`frappe-item-${frappe.num}`}
-                        onClick={() => {
-                          if (fullItem) {
-                            setSelectedCustomizeItem(fullItem);
-                          }
-                        }}
-                        className="group flex flex-col cursor-pointer p-4 md:p-5 rounded-2xl transition-all duration-300 bg-black/60 hover:bg-black/80 border border-white/5 hover:border-[#00d8f5]/30 hover:shadow-[0_8px_24px_rgba(0,216,245,0.15)] animate-fade-in"
-                      >
-                        {/* Title & Badge */}
-                        <div className="flex items-start justify-between gap-2 mb-2.5">
-                          <h3 className="text-base md:text-lg font-bold tracking-tight text-white group-hover:text-[#00e1ff] transition-colors leading-tight">
-                            <span className="font-mono text-white/50 mr-1.5 font-normal">
-                              {frappe.num}.
-                            </span>
-                            {frappe.name}
-                          </h3>
-                          
-                          {/* Circle Iced/Snowflake tag */}
-                          <div id={`snowflake-badge-${frappe.num}`} className="flex items-center space-x-1 bg-[#00d8f5] text-white px-2 py-0.5 rounded-full text-[10px] font-bold shadow-md shrink-0">
-                            <span>❄️</span>
-                            <span className="font-sans">RM{frappe.price}</span>
-                          </div>
-                        </div>
-
-                        {/* Description */}
-                        <p className="text-white/70 font-sans text-xs md:text-sm leading-relaxed group-hover:text-white/90 transition-colors mt-auto">
-                          {frappe.description}
-                        </p>
-                      </div>
-                    );
-                  })}
-                </div>
-
-              </div>
-            </section>
+            {/* Content: Branch Available Section replacing Frappe Section */}
+            <BranchAvailable />
           </div>
         )}
 
