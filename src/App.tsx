@@ -4,7 +4,6 @@ import MenuBook from './components/MenuBook';
 import LevelOneMenu from './components/LevelOneMenu';
 import MenuFlipBook from './components/MenuFlipBook';
 import MenuGrids from './components/MenuGrids';
-import BranchView from './components/BranchView';
 import BranchAvailable from './components/BranchAvailable';
 import AboutView from './components/AboutView';
 import ReviewSection from './components/ReviewSection';
@@ -180,7 +179,7 @@ export default function App() {
               <div className="absolute inset-0 bg-gradient-to-b from-[#1a0102]/90 via-[#5c0309]/45 to-[#240104]/95 z-0"></div>
 
               {/* Seamless overlay of floating green leaves floating around the pizza */}
-              {experienceLevel >= 2 ? (
+              {experienceLevel === 3 ? null : experienceLevel === 2 ? (
                 <motion.div 
                   key="motion-leaves"
                   className="absolute inset-0 z-10 pointer-events-none -translate-y-16 md:-translate-y-24 scale-110" 
@@ -197,7 +196,7 @@ export default function App() {
                      key="video-pizza"
                      style={{ y: pizzaY, rotateZ: pizzaRotate }}
                      src="/pizza3D.webm" 
-                     className="max-w-[450px] md:max-w-[880px] w-full hover:scale-[1.08] transition-all duration-700 ease-out mx-auto drop-shadow-[0_45px_45px_rgba(0,0,0,0.95)] relative object-contain outline-none border-none bg-transparent" 
+                     className="max-w-[600px] md:max-w-[1100px] w-full hover:scale-[1.08] transition-all duration-700 ease-out mx-auto drop-shadow-[0_45px_45px_rgba(0,0,0,0.95)] relative object-contain outline-none border-none bg-transparent scale-125 md:scale-150" 
                      autoPlay
                      loop
                      muted
@@ -256,14 +255,7 @@ export default function App() {
             )}
 
             {/* Content: Branch Available Section replacing Frappe Section */}
-            <BranchAvailable />
-          </div>
-        )}
-
-        {/* Tab 2: Branch View */}
-        {activeTab === 'branch' && (
-          <div className="pt-36 md:pt-40 pb-12 bg-[#fff8f1]">
-            <BranchView experienceLevel={experienceLevel} />
+            <BranchAvailable experienceLevel={experienceLevel} />
           </div>
         )}
 

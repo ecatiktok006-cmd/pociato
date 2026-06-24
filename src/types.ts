@@ -38,6 +38,7 @@ export interface Branch {
   hours: string;
   tableAvailability: string; // e.g. "Limited", "Good", "Busy"
   imageUrl: string;
+  mapUrl?: string;
 }
 
 export interface TableReservation {

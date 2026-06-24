@@ -85,8 +85,16 @@ export default function Header({ activeTab, setActiveTab, cartCount, onOpenCart,
               key={tab}
               id={`tab-btn-${tab}`}
               onClick={() => {
-                setActiveTab(tab);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                if (tab === 'branch') {
+                  setActiveTab('menu');
+                  setTimeout(() => {
+                    const el = document.getElementById('branches-section');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }, 150);
+                } else {
+                  setActiveTab(tab);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
               }}
               className={`px-6 py-2 rounded-full transition-all duration-300 text-[10px] md:text-sm font-bold flex items-center gap-1.5 ${activeClass}`}
             >

@@ -236,24 +236,48 @@ export const MENU_ITEMS: MenuItem[] = [
 
 export const BRANCHES: Branch[] = [
   {
-    id: 'branch-industrial',
-    name: 'Pociato Downtown - The Iron Foundry',
-    vibe: 'Industrial-chic warehouse, high high ceilings, roaring gas ovens, and live slow jazz.',
-    address: '428 S. Concrete Avenue, Suite B, Downtown',
-    contact: '+1 (555) 901-4903 | downtown@pociato.com',
-    hours: 'Mon - Sun: 7:00 AM - 10:00 PM',
-    tableAvailability: 'Busy (Avg wait is 15m)',
-    imageUrl: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=600'
+    id: 'eco-majestic',
+    name: 'Pociato Coffee & Pizza – Eco Majestic',
+    vibe: 'Modern café with comfortable seating and ambient lighting.',
+    address: 'Semenyih, Selangor',
+    contact: '+60 12-345 6789 | eco-majestic@pociato.com',
+    hours: 'Mon - Sun: 8:00 AM - 10:00 PM',
+    tableAvailability: 'Available',
+    imageUrl: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=600',
+    mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15938.835926528741!2d101.83965585!3d2.9004523!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cdc8a0349f7e5b%3A0xc3c6046e729a5180!2sEco%20Majestic%2C%20Semenyih%2C%20Selangor%2C%20Malaysia!5e0!3m2!1sen!2sus!4v1717364239857!5m2!1sen!2sus'
   },
   {
-    id: 'branch-harbor',
-    name: 'Pociato Waterfront - The Rusty Anchor',
-    vibe: 'Steelite bar counters, breeze-cooled inner courtyard, overlooking the industrial shipyards.',
-    address: '89 Waterfront Docks, East Pier',
-    contact: '+1 (555) 830-2212 | waterfront@pociato.com',
-    hours: 'Wed - Sun: 8:00 AM - 11:00 PM',
+    id: 'taman-kajang-utama',
+    name: 'Pociato Coffee & Pizza – Taman Kajang Utama',
+    vibe: 'Cozy neighborhood spot for quick bites and aromatic coffee.',
+    address: 'Kajang, Selangor',
+    contact: '+60 12-345 6790 | kajang-utama@pociato.com',
+    hours: 'Mon - Sun: 8:00 AM - 10:00 PM',
+    tableAvailability: 'Busy',
+    imageUrl: 'https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&q=80&w=600',
+    mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15938.318392176472!2d101.782806!3d2.9733075!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cdcbc8c84d6b6d%3A0x6b7cc9df1b8b6c0b!2sTaman%2C%20Kajang%20Utama%2C%20Kajang%2C%20Selangor%2C%20Malaysia!5e0!3m2!1sen!2sus!4v1717364239857!5m2!1sen!2sus'
+  },
+  {
+    id: 'bandar-tun-hussein-onn',
+    name: 'Pociato Coffee & Pizza – Bandar Tun Hussein Onn',
+    vibe: 'Spacious and vibrant environment, perfect for gatherings.',
+    address: 'Cheras, Selangor',
+    contact: '+60 12-345 6791 | cheras@pociato.com',
+    hours: 'Mon - Sun: 8:00 AM - 11:00 PM',
+    tableAvailability: 'Available',
+    imageUrl: 'https://images.unsplash.com/photo-1559925393-8be0ec4767c8?auto=format&fit=crop&q=80&w=600',
+    mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15937.142426915243!2d101.761584!3d3.045053!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cc3337a8bd9cfb%3A0xcab25c11bc32af2d!2sBandar%20Tun%20Hussein%20Onn%2C%20Cheras%2C%20Selangor%2C%20Malaysia!5e0!3m2!1sen!2sus!4v1717364239857!5m2!1sen!2sus'
+  },
+  {
+    id: 'cbd-perdana-3',
+    name: 'Pociato Coffee & Pizza – CBD Perdana 3',
+    vibe: 'Sleek and modern interior designed for professionals and students.',
+    address: 'Cyberjaya, Selangor',
+    contact: '+60 12-345 6792 | cyberjaya@pociato.com',
+    hours: 'Mon - Sun: 7:00 AM - 10:00 PM',
     tableAvailability: 'Excellent',
-    imageUrl: 'https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&q=80&w=600'
+    imageUrl: 'https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?auto=format&fit=crop&q=80&w=600',
+    mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15939.297495543787!2d101.642106!3d2.919799!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cdb6fb3e2b2e8d%3A0x6b7cc9df1b8b6c0b!2sCBD%20Perdana%203%2C%20Cyberjaya%2C%20Selangor%2C%20Malaysia!5e0!3m2!1sen!2sus!4v1717364239857!5m2!1sen!2sus'
   }
 ];
 
