@@ -1,7 +1,79 @@
-import React from 'react';
-import { Heart, Sparkles, ChefHat, Eye } from 'lucide-react';
+import React, { useState } from 'react';
+import { Heart, Sparkles, ChefHat, Eye, Maximize } from 'lucide-react';
+import { motion } from 'motion/react';
 
-export default function AboutView() {
+export default function AboutView({ experienceLevel = 1 }: { experienceLevel?: 1 | 2 | 3 }) {
+  const [activeNode, setActiveNode] = useState(0);
+
+  const nodes = [
+    { title: "The Roastery", x: 20, y: 30, desc: "Zero-emission electric fluid bed roasting.", img: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&q=80&w=400" },
+    { title: "The Bakery", x: 60, y: 70, desc: "72-hour sourdough fermentation station.", img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=400" },
+    { title: "The Wood Oven", x: 80, y: 20, desc: "Hand-laid brick oven burning local red-oak.", img: "https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&q=80&w=400" }
+  ];
+
+  if (experienceLevel >= 2) {
+    return (
+      <div className="w-full h-screen min-h-[600px] bg-[#121212] relative overflow-hidden -mt-36 pt-36">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(40,10,12,0.4)_0%,transparent_100%)] pointer-events-none z-0"></div>
+        <div className="absolute top-36 left-8 z-20 max-w-sm">
+          <h2 className="font-serif text-3xl text-white tracking-widest uppercase mb-4 shadow-lg drop-shadow-xl border-b border-white/20 pb-4">Pociato Ecosystem</h2>
+          <p className="text-white/60 text-sm font-sans">
+            Explore our industrial union of beans, water, and flour. Interact with the nodes to view real-time station metrics.
+          </p>
+        </div>
+
+        {/* Level 3 Sandbox Toolbar Overlay */}
+        {experienceLevel === 3 && (
+          <div className="absolute top-36 right-8 z-30 max-w-[240px] bg-black/60 backdrop-blur-md border border-white/20 p-4 rounded-xl text-white shadow-2xl animate-fade-in">
+            <h3 className="font-mono text-xs uppercase tracking-wider text-[#00d8f5] font-bold mb-2 flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#00d8f5] animate-pulse"></span>
+              Level 3 Sandbox
+            </h3>
+            <p className="text-[10px] text-white/70 leading-relaxed mb-3 font-sans">
+              Now ready for your custom extensions, 3D WebGL meshes, or custom brand layouts. Feel free to redesign this view or add advanced widgets!
+            </p>
+            <div className="space-y-1 text-[9px] font-mono text-white/50 bg-black/40 p-2 rounded border border-white/5">
+              <div>// Customize in AboutView.tsx</div>
+              <div>// Add your WebGL nodes</div>
+              <div>// Or external API panels</div>
+            </div>
+          </div>
+        )}
+
+        {/* Node connections (SVG) */}
+        <svg className="absolute inset-0 w-full h-full z-10 pointer-events-none" style={{ filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.2))' }}>
+          <path d="M 20% 30% Q 40% 50% 60% 70% T 80% 20%" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="2" strokeDasharray="5,5" />
+        </svg>
+
+        {nodes.map((node, i) => (
+          <motion.div
+            key={i}
+            whileHover={{ scale: 1.05 }}
+            className="absolute z-30 flex flex-col items-center"
+            style={{ left: `${node.x}%`, top: `${node.y}%`, transform: 'translate(-50%, -50%)' }}
+            onMouseEnter={() => setActiveNode(i)}
+          >
+            <div className={`w-8 h-8 rounded-full border-2 ${activeNode === i ? 'border-[#00d8f5] bg-[#00d8f5]/20 shadow-[0_0_20px_rgba(0,216,245,0.5)]' : 'border-white/40 bg-white/10'} backdrop-blur-md cursor-pointer transition-all flex items-center justify-center`}>
+              <div className={`w-2 h-2 rounded-full ${activeNode === i ? 'bg-[#00d8f5] animate-pulse' : 'bg-white/50'}`}></div>
+            </div>
+            <span className="text-white font-mono text-[10px] mt-2 uppercase tracking-widest bg-black/50 px-2 py-0.5 rounded backdrop-blur">{node.title}</span>
+            
+            {activeNode === i && (
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="absolute top-14 left-1/2 -translate-x-1/2 w-48 bg-white/10 backdrop-blur-xl border border-white/20 p-3 rounded-xl shadow-2xl pointer-events-none"
+              >
+                <img src={node.img} className="w-full h-24 object-cover rounded-lg mb-2" alt={node.title} />
+                <p className="text-white/80 text-xs text-center">{node.desc}</p>
+              </motion.div>
+            )}
+          </motion.div>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="w-full max-w-5xl mx-auto py-8 px-4 md:px-0">
       

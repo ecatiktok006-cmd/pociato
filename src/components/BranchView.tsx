@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BRANCHES } from '../data';
 import { TableReservation } from '../types';
-import { MapPin, Phone, Calendar, Clock, Users, Coffee, Sparkles, CheckCircle2 } from 'lucide-react';
+import { MapPin, Phone, Calendar, Clock, Users, Coffee, Sparkles, CheckCircle2, Activity } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 
-export default function BranchView() {
+export default function BranchView({ experienceLevel = 1 }: { experienceLevel?: 1 | 2 | 3 }) {
   const [formData, setFormData] = useState({
     branchId: BRANCHES[0].id,
     name: '',
@@ -17,6 +18,31 @@ export default function BranchView() {
 
   const [confirmedReservation, setConfirmedReservation] = useState<TableReservation | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [liveTables, setLiveTables] = useState<Record<string, number>>({
+    'branch-1': 12, 'branch-2': 5, 'branch-3': 18
+  });
+
+  // Level 3 Fake Supabase real-time sync simulation
+  useEffect(() => {
+    if (experienceLevel < 2) return;
+
+    // Supabase mock subscription logic here:
+    // const channel = supabase.channel('table-updates').on('broadcast', { event: 'update' }, (payload) => { ... }).subscribe();
+    // For prototype purposes, we mock it locally
+    const interval = setInterval(() => {
+       setLiveTables(prev => {
+         const newTables = { ...prev };
+         const randomBranch = `branch-${Math.floor(Math.random() * 3) + 1}`;
+         const current = newTables[randomBranch];
+         // Fluctuate availability ± 1 based on real-time noise
+         const change = Math.random() > 0.5 ? 1 : -1;
+         newTables[randomBranch] = Math.max(0, Math.min(25, current + change));
+         return newTables;
+       });
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [experienceLevel]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,9 +98,20 @@ export default function BranchView() {
                       referrerPolicy="no-referrer"
                       className="w-full h-full object-cover"
                     />
-                    <div className="absolute top-2 right-2 px-2.5 py-1 text-[9px] font-mono uppercase font-bold text-[#1d1b17] bg-cream shadow-sm rounded-sm">
-                      {branch.tableAvailability}
-                    </div>
+                    {experienceLevel >= 2 ? (
+                      <div className="absolute top-2 right-2 px-2.5 py-1 text-[9px] font-mono uppercase font-bold text-white bg-black/80 flex items-center gap-1.5 shadow-sm rounded-sm overflow-hidden backdrop-blur-md border border-white/10">
+                        <motion.div 
+                           animate={{ opacity: [1, 0.5, 1] }} 
+                           transition={{ repeat: Infinity, duration: 1.5 }}
+                           className="w-1.5 h-1.5 rounded-full bg-green-500"
+                        />
+                        <span>LIVE: {liveTables[branch.id]} TABLES OPEN</span>
+                      </div>
+                    ) : (
+                      <div className="absolute top-2 right-2 px-2.5 py-1 text-[9px] font-mono uppercase font-bold text-[#1d1b17] bg-cream shadow-sm rounded-sm">
+                        {branch.tableAvailability}
+                      </div>
+                    )}
                   </div>
 
                   <div>

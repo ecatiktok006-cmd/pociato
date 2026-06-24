@@ -35,15 +35,15 @@ export default function Header({ activeTab, setActiveTab, cartCount, onOpenCart,
            onClick={toggleDropdown}
            className="mt-8 md:mt-0 flex items-center justify-between gap-2 px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full text-xs font-bold text-white uppercase tracking-wider backdrop-blur-md transition-colors w-40"
          >
-            <span>Lvl {experienceLevel}: {experienceLevel === 1 ? 'Static' : experienceLevel === 2 ? 'Motion' : '3D/GSAP'}</span>
+            <span>Lvl {experienceLevel}: {experienceLevel === 1 ? 'Static' : experienceLevel === 2 ? 'Motion & AI' : 'Workspace Sandbox'}</span>
             <ChevronDown className={`w-3.5 h-3.5 transition-transform ${levelDropdownOpen ? 'rotate-180' : ''}`} />
          </button>
          
          {levelDropdownOpen && (
            <div className="absolute top-full left-0 mt-2 w-48 bg-black/90 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl flex flex-col overflow-hidden animate-fade-in z-50">
              <button onClick={() => { setExperienceLevel(1); setLevelDropdownOpen(false); }} className={`text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider ${experienceLevel === 1 ? 'bg-burgundy text-white' : 'text-white/60 hover:text-white hover:bg-white/10'}`}>Level 1: Static (No Motion)</button>
-             <button onClick={() => { setExperienceLevel(2); setLevelDropdownOpen(false); }} className={`text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider ${experienceLevel === 2 ? 'bg-burgundy text-white' : 'text-white/60 hover:text-white hover:bg-white/10'}`}>Level 2: Basic Motion & UI</button>
-             <button onClick={() => { setExperienceLevel(3); setLevelDropdownOpen(false); }} className={`text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider ${experienceLevel === 3 ? 'bg-burgundy text-white' : 'text-white/60 hover:text-white hover:bg-white/10'}`}>Level 3: Advanced WebGL/3D</button>
+             <button onClick={() => { setExperienceLevel(2); setLevelDropdownOpen(false); }} className={`text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider ${experienceLevel === 2 ? 'bg-burgundy text-white' : 'text-white/60 hover:text-white hover:bg-white/10'}`}>Level 2: Motion, AI & Sync</button>
+             <button onClick={() => { setExperienceLevel(3); setLevelDropdownOpen(false); }} className={`text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider ${experienceLevel === 3 ? 'bg-burgundy text-white' : 'text-white/60 hover:text-white hover:bg-white/10'}`}>Level 3: Custom Redesign Space</button>
            </div>
          )}
       </div>

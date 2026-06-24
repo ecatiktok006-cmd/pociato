@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import MenuBook from './components/MenuBook';
+import MenuListOldStyle from './components/MenuListOldStyle';
 import MenuGrids from './components/MenuGrids';
 import BranchView from './components/BranchView';
 import AboutView from './components/AboutView';
 import ReviewSection from './components/ReviewSection';
 import CartDrawer from './components/CartDrawer';
 import CustomizeModal from './components/CustomizeModal';
+import AiAssistant from './components/AiAssistant';
 import { MENU_ITEMS } from './data';
 import { CartItem, MenuItem } from './types';
 import { Coffee, Pizza, Sparkles, MessageSquare, Instagram, Heart, Star, Phone, Shield, ArrowUp, X } from 'lucide-react';
@@ -176,19 +178,32 @@ export default function App() {
               <div className="absolute inset-0 bg-gradient-to-b from-[#1a0102]/90 via-[#5c0309]/45 to-[#240104]/95 z-0"></div>
 
               {/* Seamless overlay of floating green leaves floating around the pizza */}
-              {experienceLevel === 3 ? (
+              {experienceLevel >= 2 ? (
                 <motion.div 
+                  key="motion-leaves"
                   className="absolute inset-0 z-10 pointer-events-none -translate-y-16 md:-translate-y-24 scale-110" 
                   style={{ y: leavesParallax, backgroundImage: `url('/leaves.png')`, backgroundPosition: 'center', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}
                 />
               ) : (
-                <div className="absolute inset-0 z-10 pointer-events-none -translate-y-16 md:-translate-y-24 scale-110" style={{ backgroundImage: `url('/leaves.png')`, backgroundPosition: 'center', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}></div>
+                <div key="plain-leaves" className="absolute inset-0 z-10 pointer-events-none -translate-y-16 md:-translate-y-24 scale-110" style={{ backgroundImage: `url('/leaves.png')`, backgroundPosition: 'center', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}></div>
               )}
 
               {/* Floating Pizza with perfect mockup 3D hover scale and lighting shadow */}
               <div className="relative z-20 flex flex-col items-center w-full max-w-5xl mx-auto px-4 -translate-y-4 md:translate-y-4" style={{ perspective: '1200px' }}>
                 {experienceLevel === 3 ? (
+                   <motion.video 
+                     key="video-pizza"
+                     style={{ y: pizzaY, rotateZ: pizzaRotate }}
+                     src="/pizza3D.webm" 
+                     className="max-w-[450px] md:max-w-[880px] w-full hover:scale-[1.08] transition-all duration-700 ease-out mx-auto drop-shadow-[0_45px_45px_rgba(0,0,0,0.95)] relative object-contain outline-none border-none bg-transparent" 
+                     autoPlay
+                     loop
+                     muted
+                     playsInline
+                   />
+                ) : experienceLevel === 2 ? (
                    <motion.img 
+                     key="motion-pizza"
                      style={{ y: pizzaY, rotateZ: pizzaRotate }}
                      src="/pizza.png" 
                      className="max-w-[320px] md:max-w-[650px] w-full hover:scale-[1.08] transition-all duration-700 ease-out mx-auto drop-shadow-[0_45px_45px_rgba(0,0,0,0.95)] relative object-contain" 
@@ -196,8 +211,9 @@ export default function App() {
                    />
                 ) : (
                    <img 
+                     key="plain-pizza"
                      src="/pizza.png" 
-                     className={`max-w-[320px] md:max-w-[650px] w-full ${experienceLevel === 2 ? 'hover:scale-[1.03] transition-transform duration-700 ease-out' : ''} mx-auto drop-shadow-[0_35px_35px_rgba(0,0,0,0.85)] relative object-contain`} 
+                     className="max-w-[320px] md:max-w-[650px] w-full mx-auto drop-shadow-[0_35px_35px_rgba(0,0,0,0.85)] relative object-contain" 
                      alt="Artisanal Pizza" 
                    />
                 )}
@@ -210,16 +226,25 @@ export default function App() {
               </div>
             </div>
 
-            {/* Content: Opened physical Book Section with deep solid burgundy background matching mockup */}
-            <section 
-              id="book-menu-section" 
-              className="pt-28 md:pt-48 pb-16 md:pb-28 px-4 md:px-12 bg-[#36050a] relative z-15 scroll-mt-20"
-            >
-              {/* Outer ivory/cream rounded card matching mockup exactly */}
-              <div className="max-w-6xl mx-auto bg-[#fcf6ee] rounded-[32px] md:rounded-[64px] shadow-2xl p-4 md:p-12 relative z-10 border border-cream/10">
-                <MenuBook items={MENU_ITEMS} onSelectItem={setSelectedCustomizeItem} />
-              </div>
-            </section>
+            {/* Content: Opened physical Book Section / Old Style Menu List */}
+            {experienceLevel === 1 ? (
+              <section 
+                id="old-menu-section" 
+                className="py-16 md:py-24 px-4 bg-[#fffcf7] relative z-15 scroll-mt-20"
+              >
+                <MenuListOldStyle items={MENU_ITEMS} onSelectItem={setSelectedCustomizeItem} />
+              </section>
+            ) : (
+              <section 
+                id="book-menu-section" 
+                className="pt-28 md:pt-48 pb-16 md:pb-28 px-4 md:px-12 bg-[#36050a] relative z-15 scroll-mt-20"
+              >
+                {/* Outer ivory/cream rounded card matching mockup exactly */}
+                <div className="max-w-6xl mx-auto bg-[#fcf6ee] rounded-[32px] md:rounded-[64px] shadow-2xl p-4 md:p-12 relative z-10 border border-cream/10">
+                  <MenuBook items={MENU_ITEMS} onSelectItem={setSelectedCustomizeItem} />
+                </div>
+              </section>
+            )}
 
             {/* Content: Dedicated Coffee Frappe Menu Section as requested */}
             <section 
@@ -318,21 +343,21 @@ export default function App() {
         {/* Tab 2: Branch View */}
         {activeTab === 'branch' && (
           <div className="pt-36 md:pt-40 pb-12 bg-[#fff8f1]">
-            <BranchView />
+            <BranchView experienceLevel={experienceLevel} />
           </div>
         )}
 
         {/* Tab 3: About View */}
         {activeTab === 'about' && (
           <div className="pt-36 md:pt-40 pb-12 bg-[#fff8f1]">
-            <AboutView />
+            <AboutView experienceLevel={experienceLevel} />
           </div>
         )}
 
         {/* Tab 4: Reviews Section */}
         {activeTab === 'reviews' && (
           <div className="pt-36 md:pt-40 pb-12 bg-[#fff8f1]">
-            <ReviewSection />
+            <ReviewSection experienceLevel={experienceLevel} />
           </div>
         )}
 
@@ -441,6 +466,9 @@ export default function App() {
           <ArrowUp className="w-4 h-4 text-white" />
         </button>
       )}
+
+      {/* AI Assistant Chat Widget (Level 3) */}
+      <AiAssistant experienceLevel={experienceLevel} />
 
       {/* Footer Modals Overlay */}
       {activeFooterModal && (

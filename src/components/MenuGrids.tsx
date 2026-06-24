@@ -1,6 +1,7 @@
 import React from 'react';
 import { MenuItem } from '../types';
 import { ShoppingBag, Eye, Star, Heart } from 'lucide-react';
+import { motion } from 'motion/react';
 
 interface MenuGridsProps {
   items: MenuItem[];
@@ -14,11 +15,28 @@ export default function MenuGrids({ items, onSelectItem, onQuickAdd }: MenuGrids
   const coffees = items.filter(i => i.category === 'coffee');
   const pastries = items.filter(i => i.category === 'pastry');
 
+  const containerVariants = {
+    hidden: {},
+    show: {
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+  };
+
   return (
     <div className="w-full space-y-16 mt-20">
       
       {/* 1. Artisanal Pizzas Cards */}
-      <section id="pizzas-session">
+      <motion.section 
+        id="pizzas-session"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-100px" }}
+      >
         <div className="flex items-center justify-between mb-8">
           <div>
             <h3 className="font-serif text-3xl text-espresso tracking-tight">Artisanal Pizzas</h3>
@@ -27,9 +45,10 @@ export default function MenuGrids({ items, onSelectItem, onQuickAdd }: MenuGrids
           <div className="h-px bg-espresso/15 flex-grow mx-8 hidden sm:block"></div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {pizzas.map((pizza) => (
-            <div 
+            <motion.div 
+              variants={itemVariants}
               key={pizza.id}
               className="group rounded-lg overflow-hidden glass-light flex flex-col justify-between hover:-translate-y-1 transition-all duration-350 cursor-pointer shadow-lg hover:shadow-xl border border-matte-black/10"
               onClick={() => onSelectItem(pizza)}
@@ -96,13 +115,18 @@ export default function MenuGrids({ items, onSelectItem, onQuickAdd }: MenuGrids
                   </button>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
       {/* 2. Specialty Coffee Cards (Matching dark glassmorphism card mock in screenshot) */}
-      <section id="coffees-session">
+      <motion.section 
+        id="coffees-session"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-100px" }}
+      >
         <div className="flex items-center justify-between mb-8">
           <div>
             <h3 className="font-serif text-3xl text-espresso tracking-tight">Specialty Coffee</h3>
@@ -112,9 +136,10 @@ export default function MenuGrids({ items, onSelectItem, onQuickAdd }: MenuGrids
         </div>
 
         {/* 3 columns matching design: dark layout */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {coffees.map((coffee) => (
-            <div 
+            <motion.div 
+              variants={itemVariants}
               key={coffee.id}
               onClick={() => onSelectItem(coffee)}
               className="p-6 rounded-lg glass-dark hover:translate-y-[-2px] transition-all duration-300 cursor-pointer flex flex-col justify-between min-h-[180px] border border-white/5 relative overflow-hidden group"
@@ -153,13 +178,19 @@ export default function MenuGrids({ items, onSelectItem, onQuickAdd }: MenuGrids
                   <span>Order</span>
                 </button>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
       {/* 3. House Pastries Cards (Matching dark glassmorphism card mock in screenshot) */}
-      <section id="pastries-session" className="pb-12">
+      <motion.section 
+        id="pastries-session" 
+        className="pb-12"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-100px" }}
+      >
         <div className="flex items-center justify-between mb-8">
           <div>
             <h3 className="font-serif text-3xl text-espresso tracking-tight">House Pastries</h3>
@@ -168,9 +199,10 @@ export default function MenuGrids({ items, onSelectItem, onQuickAdd }: MenuGrids
           <div className="h-px bg-espresso/15 flex-grow mx-8 hidden sm:block"></div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {pastries.map((pastry) => (
-            <div 
+            <motion.div 
+              variants={itemVariants}
               key={pastry.id}
               onClick={() => onSelectItem(pastry)}
               className="p-6 rounded-lg glass-dark hover:translate-y-[-2px] transition-all duration-300 cursor-pointer flex flex-col justify-between min-h-[170px] border border-white/5 relative overflow-hidden group"
@@ -209,10 +241,10 @@ export default function MenuGrids({ items, onSelectItem, onQuickAdd }: MenuGrids
                   <span>Order</span>
                 </button>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
     </div>
   );
