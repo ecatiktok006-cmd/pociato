@@ -1,6 +1,6 @@
 import React from 'react';
 import { MenuItem } from '../types';
-import { ShoppingBag, Eye, Star, Heart } from 'lucide-react';
+import { ShoppingBag, Eye, Star, Heart, Coffee as CoffeeIcon } from 'lucide-react';
 import { motion } from 'motion/react';
 
 interface MenuGridsProps {
@@ -10,10 +10,20 @@ interface MenuGridsProps {
 }
 
 export default function MenuGrids({ items, onSelectItem, onQuickAdd }: MenuGridsProps) {
-  // We can segment the data into Coffees, Pastries and Pizzas to display themed bento blocks
+  // Segment the data into the precise category groups
   const pizzas = items.filter(i => i.category === 'pizza');
+  const pastas = items.filter(i => i.category === 'pasta');
   const coffees = items.filter(i => i.category === 'coffee');
   const pastries = items.filter(i => i.category === 'pastry');
+  const combos = items.filter(i => i.category === 'combo');
+
+  // Coffee subgroups
+  const signatureCoffees = coffees.filter(c => c.subcategory !== 'essential');
+  const essentialCoffees = coffees.filter(c => c.subcategory === 'essential');
+
+  // Pastry subgroups
+  const simplePastries = pastries.filter(p => p.subcategory !== 'cakes');
+  const cakes = pastries.filter(p => p.subcategory === 'cakes');
 
   const containerVariants = {
     hidden: {},
@@ -98,8 +108,8 @@ export default function MenuGrids({ items, onSelectItem, onQuickAdd }: MenuGrids
                     <h4 className="font-serif text-lg font-bold text-espresso group-hover:text-burgundy transition-colors">
                       {pizza.name}
                     </h4>
-                    <span className="font-serif text-lg font-bold text-burgundy">
-                      ${pizza.price.toFixed(2)}
+                    <span className="font-serif text-lg font-bold text-burgundy whitespace-nowrap">
+                      RM {pizza.price.toFixed(2)}
                     </span>
                   </div>
                   <p className="font-sans text-xs text-espresso/75 mt-2 leading-relaxed">
@@ -125,6 +135,65 @@ export default function MenuGrids({ items, onSelectItem, onQuickAdd }: MenuGrids
         </motion.div>
       </motion.section>
 
+      {/* 2. Artisanal Pastas Cards */}
+      <motion.section 
+        id="pastas-session"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-100px" }}
+      >
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h3 className="font-serif text-3xl text-[#f7f1ea] tracking-tight">Artisanal Pastas</h3>
+            <p className="font-sans text-xs text-caramel tracking-wider uppercase mt-1 font-semibold">Al Dente Spaghetti • Rich Herb Blends</p>
+          </div>
+          <div className="h-px bg-white/10 flex-grow mx-8 hidden sm:block"></div>
+        </div>
+
+        <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          {pastas.map((pasta) => (
+            <motion.div 
+              variants={itemVariants}
+              key={pasta.id}
+              className="group rounded-lg overflow-hidden glass-light flex flex-col justify-between hover:-translate-y-1 transition-all duration-350 cursor-pointer shadow-md hover:shadow-lg border border-matte-black/10"
+              onClick={() => onSelectItem(pasta)}
+            >
+              {/* Image */}
+              <div className="w-full h-44 relative overflow-hidden">
+                <img 
+                  src={pasta.image} 
+                  alt={pasta.name} 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+
+              {/* Content */}
+              <div className="p-4 flex-grow flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between">
+                    <h4 className="font-serif text-base font-bold text-espresso group-hover:text-burgundy transition-colors truncate">
+                      {pasta.name}
+                    </h4>
+                    <span className="font-serif text-base font-bold text-burgundy whitespace-nowrap">
+                      RM {pasta.price.toFixed(2)}
+                    </span>
+                  </div>
+                  <p className="font-sans text-[11px] text-espresso/70 mt-1.5 leading-relaxed line-clamp-3">
+                    {pasta.description}
+                  </p>
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-espresso/5 flex justify-between items-center">
+                  <span className="text-[9px] font-mono uppercase tracking-wider text-caramel font-bold">Customize Protein</span>
+                  <button className="text-burgundy text-[11px] font-serif font-bold uppercase">Configure →</button>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </motion.section>
+
       {/* Themed Red Menu for Coffee and Pastries */}
       <motion.section
         initial="hidden"
@@ -138,17 +207,17 @@ export default function MenuGrids({ items, onSelectItem, onQuickAdd }: MenuGrids
         <div className="p-8 md:p-12 lg:p-16">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h3 className="font-serif text-3xl text-[#f7f1ea] tracking-tight">Signature Coffee</h3>
-              <p className="font-sans text-xs text-caramel tracking-wider uppercase mt-1 font-semibold">Artisanal Blends • Roasted Locally</p>
+              <h3 className="font-serif text-3xl text-[#f7f1ea] tracking-tight">Signature Coffee & Drinks</h3>
+              <p className="font-sans text-xs text-caramel tracking-wider uppercase mt-1 font-semibold">Artisanal Blends • Roasted Locally • Cold Frappes</p>
             </div>
             <div className="h-px bg-white/10 flex-grow mx-8 hidden sm:block"></div>
           </div>
           
-          {/* COFFEE LIST */}
+          {/* SIGNATURE COFFEE LIST */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-12">
             {/* Left Column */}
             <div className="space-y-8">
-              {coffees.slice(0, Math.ceil(coffees.length / 2)).map((coffee, idx) => (
+              {signatureCoffees.slice(0, Math.ceil(signatureCoffees.length / 2)).map((coffee, idx) => (
                 <div 
                   key={coffee.id} 
                   className="cursor-pointer group flex flex-col p-4 -m-4 rounded-2xl hover:bg-white/[0.04] hover:shadow-[0_8px_24px_rgba(0,0,0,0.2)] hover:translate-x-2 transition-all duration-300" 
@@ -158,10 +227,12 @@ export default function MenuGrids({ items, onSelectItem, onQuickAdd }: MenuGrids
                     <div className="flex items-start font-bold text-lg md:text-xl text-white/95 group-hover:text-[#ffb703] transition-colors duration-300">
                       <span className="mr-3 w-4 text-left text-white/40 group-hover:text-white/60 transition-colors">{idx + 1}.</span>
                       <span className="flex-1">{coffee.name}</span>
-                      <div className="ml-3 flex space-x-1.5 opacity-80 mt-1 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300">
-                        <div className="w-[18px] h-[18px] rounded-full bg-[#e63946] flex items-center justify-center text-[9px] shadow-sm">🔥</div>
-                        <div className="w-[18px] h-[18px] rounded-full bg-[#48cae4] flex items-center justify-center text-[9px] shadow-sm">❄️</div>
-                      </div>
+                      {coffee.icons && (
+                        <div className="ml-3 flex space-x-1.5 opacity-80 mt-1 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300">
+                          {coffee.icons.includes('hot') && <div className="w-[18px] h-[18px] rounded-full bg-[#e63946] flex items-center justify-center text-[9px] shadow-sm">🔥</div>}
+                          {coffee.icons.includes('cold') && <div className="w-[18px] h-[18px] rounded-full bg-[#48cae4] flex items-center justify-center text-[9px] shadow-sm">❄️</div>}
+                        </div>
+                      )}
                     </div>
                     <div className="font-bold text-lg md:text-xl shrink-0 ml-4 text-white/90 group-hover:text-white transition-colors duration-300">
                       RM{coffee.price.toFixed(0)}
@@ -176,7 +247,7 @@ export default function MenuGrids({ items, onSelectItem, onQuickAdd }: MenuGrids
 
             {/* Right Column */}
             <div className="space-y-8">
-              {coffees.slice(Math.ceil(coffees.length / 2)).map((coffee, idx) => (
+              {signatureCoffees.slice(Math.ceil(signatureCoffees.length / 2)).map((coffee, idx) => (
                 <div 
                   key={coffee.id} 
                   className="cursor-pointer group flex flex-col p-4 -m-4 rounded-2xl hover:bg-white/[0.04] hover:shadow-[0_8px_24px_rgba(0,0,0,0.2)] hover:translate-x-2 transition-all duration-300" 
@@ -184,12 +255,14 @@ export default function MenuGrids({ items, onSelectItem, onQuickAdd }: MenuGrids
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex items-start font-bold text-lg md:text-xl text-white/95 group-hover:text-[#ffb703] transition-colors duration-300">
-                      <span className="mr-3 w-4 text-left text-white/40 group-hover:text-white/60 transition-colors">{idx + 1 + Math.ceil(coffees.length / 2)}.</span>
+                      <span className="mr-3 w-4 text-left text-white/40 group-hover:text-white/60 transition-colors">{idx + 1 + Math.ceil(signatureCoffees.length / 2)}.</span>
                       <span className="flex-1">{coffee.name}</span>
-                      <div className="ml-3 flex space-x-1.5 opacity-80 mt-1 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300">
-                        <div className="w-[18px] h-[18px] rounded-full bg-[#e63946] flex items-center justify-center text-[9px] shadow-sm">🔥</div>
-                        <div className="w-[18px] h-[18px] rounded-full bg-[#48cae4] flex items-center justify-center text-[9px] shadow-sm">❄️</div>
-                      </div>
+                      {coffee.icons && (
+                        <div className="ml-3 flex space-x-1.5 opacity-80 mt-1 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300">
+                          {coffee.icons.includes('hot') && <div className="w-[18px] h-[18px] rounded-full bg-[#e63946] flex items-center justify-center text-[9px] shadow-sm">🔥</div>}
+                          {coffee.icons.includes('cold') && <div className="w-[18px] h-[18px] rounded-full bg-[#48cae4] flex items-center justify-center text-[9px] shadow-sm">❄️</div>}
+                        </div>
+                      )}
                     </div>
                     <div className="font-bold text-lg md:text-xl shrink-0 ml-4 text-white/90 group-hover:text-white transition-colors duration-300">
                       RM{coffee.price.toFixed(0)}
@@ -209,38 +282,35 @@ export default function MenuGrids({ items, onSelectItem, onQuickAdd }: MenuGrids
             </h2>
           </div>
 
+          {/* ESSENTIAL COFFEE LIST */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-8">
              <div className="space-y-8">
-               {[
-                 { id: 'coffee-oat-latte', name: 'Latte', price: '11', desc: 'Bold espresso combined with fresh milk and served over ice for a smooth, creamy and refreshing finish.' },
-                 { id: 'coffee-flat-white', name: 'Cappucino', price: '11', desc: 'A classic Italian favourite featuring espresso, steamed milk and a velvety layer of milk foam. Perfectly balanced and timeless.' }
-               ].map((item, idx) => {
-                 const matchedItem = items.find(i => i.id === item.id) || items.find(i => i.category === 'coffee');
-                 return (
-                   <div 
-                     key={idx} 
-                     className="flex flex-col group cursor-pointer p-4 -m-4 rounded-2xl hover:bg-white/[0.04] hover:shadow-[0_8px_24px_rgba(0,0,0,0.2)] hover:translate-x-2 transition-all duration-300"
-                     onClick={() => matchedItem && onSelectItem(matchedItem)}
-                   >
-                     <div className="flex items-start justify-between">
-                       <div className="flex items-start font-bold text-lg md:text-xl text-white/95 group-hover:text-[#ffb703] transition-colors duration-300">
-                         <span className="mr-3 w-4 text-left text-white/40 group-hover:text-white/60 transition-colors">{idx + 1}.</span>
-                         <span>{item.name}</span>
-                         <div className="ml-3 flex space-x-1.5 opacity-80 mt-1 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300">
-                            <div className="w-[18px] h-[18px] rounded-full bg-[#e63946] flex items-center justify-center text-[9px] shadow-sm">🔥</div>
-                            <div className="w-[18px] h-[18px] rounded-full bg-[#48cae4] flex items-center justify-center text-[9px] shadow-sm">❄️</div>
-                         </div>
-                       </div>
-                       <div className="font-bold text-lg md:text-xl shrink-0 ml-4 text-white/90 group-hover:text-white transition-colors duration-300">
-                         RM{item.price}
-                       </div>
-                     </div>
-                     <p className="text-sm md:text-sm text-white/70 mt-1.5 pl-7 max-w-[95%] leading-relaxed group-hover:text-white/90 transition-colors duration-300">
-                       {item.desc}
-                     </p>
-                   </div>
-                 );
-               })}
+               {essentialCoffees.map((item, idx) => (
+                  <div 
+                    key={item.id} 
+                    className="flex flex-col group cursor-pointer p-4 -m-4 rounded-2xl hover:bg-white/[0.04] hover:shadow-[0_8px_24px_rgba(0,0,0,0.2)] hover:translate-x-2 transition-all duration-300"
+                    onClick={() => onSelectItem(item)}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-start font-bold text-lg md:text-xl text-white/95 group-hover:text-[#ffb703] transition-colors duration-300">
+                        <span className="mr-3 w-4 text-left text-white/40 group-hover:text-white/60 transition-colors">{idx + 1}.</span>
+                        <span>{item.name}</span>
+                        {item.icons && (
+                          <div className="ml-3 flex space-x-1.5 opacity-80 mt-1 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300">
+                            {item.icons.includes('hot') && <div className="w-[18px] h-[18px] rounded-full bg-[#e63946] flex items-center justify-center text-[9px] shadow-sm">🔥</div>}
+                            {item.icons.includes('cold') && <div className="w-[18px] h-[18px] rounded-full bg-[#48cae4] flex items-center justify-center text-[9px] shadow-sm">❄️</div>}
+                          </div>
+                        )}
+                      </div>
+                      <div className="font-bold text-lg md:text-xl shrink-0 ml-4 text-white/90 group-hover:text-white transition-colors duration-300">
+                        RM{item.price.toFixed(0)}
+                      </div>
+                    </div>
+                    <p className="text-sm md:text-sm text-white/70 mt-1.5 pl-7 max-w-[95%] leading-relaxed group-hover:text-white/90 transition-colors duration-300">
+                      {item.description}
+                    </p>
+                  </div>
+               ))}
              </div>
              
              <div className="space-y-8 mt-8 lg:mt-0">
@@ -260,13 +330,13 @@ export default function MenuGrids({ items, onSelectItem, onQuickAdd }: MenuGrids
              </div>
           </div>
 
-          {/* PASTRIES BLOCKS */}
+          {/* PASTRIES & CAKES BLOCKS */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-20">
             {/* Pastries Category Block */}
             <div className="bg-[#5c151f] rounded-[32px] p-8 md:p-10 shadow-xl border border-white/5">
-              <h3 className="text-3xl md:text-4xl font-black mb-8 tracking-wide text-white/95 uppercase" style={{ fontFamily: 'Impact, sans-serif' }}>PASTRIES</h3>
+              <h3 className="text-3xl md:text-4xl font-black mb-8 tracking-wide text-white/95 uppercase" style={{ fontFamily: 'Impact, sans-serif' }}>PASTRIES & PIES</h3>
               <div className="space-y-6">
-                {pastries.map((pastry, idx) => (
+                {simplePastries.map((pastry, idx) => (
                   <div 
                     key={pastry.id} 
                     className="cursor-pointer group flex flex-col p-4 -m-4 rounded-2xl hover:bg-white/[0.04] hover:shadow-[0_8px_24px_rgba(0,0,0,0.2)] hover:translate-x-2 transition-all duration-300" 
@@ -289,37 +359,30 @@ export default function MenuGrids({ items, onSelectItem, onQuickAdd }: MenuGrids
               </div>
             </div>
 
-            {/* Cakes Category Block (Mock Data for Balance) */}
+            {/* Cakes Category Block */}
             <div className="bg-[#85444e] rounded-[32px] p-8 md:p-10 shadow-xl border border-white/5 relative overflow-hidden flex flex-col">
-              <h3 className="text-3xl md:text-4xl font-black mb-8 tracking-wide text-white/95 uppercase" style={{ fontFamily: 'Impact, sans-serif' }}>CAKES</h3>
+              <h3 className="text-3xl md:text-4xl font-black mb-8 tracking-wide text-white/95 uppercase" style={{ fontFamily: 'Impact, sans-serif' }}>SIGNATURE CAKES</h3>
               <div className="space-y-6 z-10 flex-grow">
-                {[
-                  { id: 'pastry-croissant', name: 'Tiramisu Cake', price: '20', desc: 'A classic Italian dessert layered with espresso-soaked sponge, mascarpone cream and a dusting of cocoa powder. Light, creamy and delicately rich in every bite.' },
-                  { id: 'pastry-cannoli', name: 'Salted Caramel Burnt Cheesecake', price: '13', desc: 'Our signature burnt cheesecake features a lightly caramelised exterior with a soft, creamy centre. Balanced with rich cheese and smooth salted caramel for a perfectly.' },
-                  { id: 'pastry-tart', name: 'Nutella Burnt Cheesecake', price: '13', desc: 'A beautifully caramelised outer layer with a luscious, creamy interior infused with rich Nutella. Served on a crisp biscuit base. Perfect for chocolate and hazelnut lovers.' }
-                ].map((cake, idx) => {
-                  const matchedPastry = items.find(i => i.id === cake.id) || items.find(i => i.category === 'pastry');
-                  return (
-                    <div 
-                      key={cake.id} 
-                      className="cursor-pointer group flex flex-col p-4 -m-4 rounded-2xl hover:bg-white/[0.04] hover:shadow-[0_8px_24px_rgba(0,0,0,0.2)] hover:translate-x-2 transition-all duration-300"
-                      onClick={() => matchedPastry && onSelectItem(matchedPastry)}
-                    >
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-start font-bold text-lg text-white/95 group-hover:text-[#ffb703] transition-colors duration-300">
-                          <span className="mr-2 w-4 text-left text-white/40 group-hover:text-white/60 transition-colors">{idx + 1}.</span>
-                          <span className="flex-1 leading-tight mt-0.5">{cake.name}</span>
-                        </div>
-                        <div className="font-bold text-lg shrink-0 ml-4 text-white/90 group-hover:text-white transition-colors duration-300">
-                          RM{cake.price}
-                        </div>
+                {cakes.map((cake, idx) => (
+                  <div 
+                    key={cake.id} 
+                    className="cursor-pointer group flex flex-col p-4 -m-4 rounded-2xl hover:bg-white/[0.04] hover:shadow-[0_8px_24px_rgba(0,0,0,0.2)] hover:translate-x-2 transition-all duration-300"
+                    onClick={() => onSelectItem(cake)}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-start font-bold text-lg text-white/95 group-hover:text-[#ffb703] transition-colors duration-300">
+                        <span className="mr-2 w-4 text-left text-white/40 group-hover:text-white/60 transition-colors">{idx + 1}.</span>
+                        <span className="flex-1 leading-tight mt-0.5">{cake.name}</span>
                       </div>
-                      <p className="text-sm text-white/70 mt-1.5 pl-6 leading-relaxed max-w-[95%] group-hover:text-white/90 transition-colors duration-300">
-                        {cake.desc}
-                      </p>
+                      <div className="font-bold text-lg shrink-0 ml-4 text-white/90 group-hover:text-white transition-colors duration-300">
+                        RM{cake.price.toFixed(0)}
+                      </div>
                     </div>
-                  );
-                })}
+                    <p className="text-sm text-white/70 mt-1.5 pl-6 leading-relaxed max-w-[95%] group-hover:text-white/90 transition-colors duration-300">
+                      {cake.description}
+                    </p>
+                  </div>
+                ))}
               </div>
               
               <div className="absolute -top-12 -right-12 w-48 h-48 bg-[#9a545e] rounded-full blur-2xl opacity-50 pointer-events-none" />
@@ -332,7 +395,64 @@ export default function MenuGrids({ items, onSelectItem, onQuickAdd }: MenuGrids
         </div>
       </motion.section>
 
+      {/* 4. Must Have Combos */}
+      <motion.section 
+        id="combos-session"
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-100px" }}
+      >
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h3 className="font-serif text-3xl text-[#f7f1ea] tracking-tight">Must-Have Combos & Feasts</h3>
+            <p className="font-sans text-xs text-caramel tracking-wider uppercase mt-1 font-semibold">Curated Sharing Platters • Value Bundles</p>
+          </div>
+          <div className="h-px bg-white/10 flex-grow mx-8 hidden sm:block"></div>
+        </div>
+
+        <motion.div variants={containerVariants} className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {combos.map((combo) => (
+            <motion.div 
+              variants={itemVariants}
+              key={combo.id}
+              className="group rounded-2xl overflow-hidden bg-gradient-to-br from-[#2e1c0c] to-[#120a04] p-6 hover:-translate-y-1 transition-all duration-350 cursor-pointer shadow-xl border border-white/5 flex flex-col justify-between"
+              onClick={() => onSelectItem(combo)}
+            >
+              <div>
+                <div className="w-full h-48 rounded-xl overflow-hidden mb-4 relative">
+                  <img 
+                    src={combo.image} 
+                    alt={combo.name} 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-4">
+                    <span className="px-3 py-1 rounded bg-burgundy text-white font-mono text-xs font-bold uppercase tracking-wider">VALUE COMBO</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between gap-4">
+                  <h4 className="font-serif text-xl font-bold text-white group-hover:text-caramel transition-colors">
+                    {combo.name}
+                  </h4>
+                  <span className="font-sans text-xl font-bold text-caramel whitespace-nowrap">
+                    RM {combo.price.toFixed(2)}
+                  </span>
+                </div>
+                <p className="font-sans text-xs text-white/70 mt-2 leading-relaxed">
+                  {combo.description}
+                </p>
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-white/10 flex justify-between items-center text-[11px] font-mono text-caramel uppercase font-bold tracking-wider">
+                <span>Perfect for groups & parties</span>
+                <span className="text-white hover:underline flex items-center gap-1">Order Combo →</span>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </motion.section>
+
     </div>
   );
 }
-

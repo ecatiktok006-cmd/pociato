@@ -13,11 +13,13 @@ export interface MenuItem {
   name: string;
   description: string;
   price: number;
-  category: 'pizza' | 'coffee' | 'pastry';
+  category: 'pizza' | 'coffee' | 'pastry' | 'pasta' | 'combo';
+  subcategory?: 'frappes' | 'signature-coffee' | 'essential' | 'non-coffee' | 'spark-series' | 'pastries' | 'cakes' | 'muffin' | 'pie' | 'finger-food' | 'pasta' | 'pizza' | 'combo';
   image: string;
   badge?: string; // e.g. "Signature", "Chef's Choice", "Best Seller"
   dietary?: ('Vegan' | 'Vegetarian' | 'Gluten-Free' | 'Nut-Free')[];
   customizations?: CustomizationOption[];
+  icons?: ('hot' | 'cold')[];
 }
 
 export interface CartItem {
@@ -59,6 +61,6 @@ export interface Review {
   rating: number;
   text: string;
   timestamp: string;
-  itemCategory?: 'pizza' | 'coffee' | 'pastry';
+  itemCategory?: 'pizza' | 'coffee' | 'pastry' | 'pasta' | 'combo';
   itemName?: string;
 }

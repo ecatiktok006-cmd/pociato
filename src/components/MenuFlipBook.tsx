@@ -11,7 +11,7 @@ export default function MenuFlipBook({ items, onSelectItem }: MenuFlipBookProps)
   const [isFlipped, setIsFlipped] = useState(false);
 
   // Filter items
-  const pizzas = items.filter(i => i.category === 'pizza');
+  const pizzas = items.filter(i => i.category === 'pizza' || i.category === 'pasta' || i.category === 'combo');
   const coffees = items.filter(i => i.category === 'coffee');
   const pastries = items.filter(i => i.category === 'pastry');
 
@@ -118,15 +118,15 @@ export default function MenuFlipBook({ items, onSelectItem }: MenuFlipBookProps)
 function PizzaPageContent({ pizzas, onSelectItem }: { pizzas: MenuItem[], onSelectItem: (item: MenuItem) => void }) {
   return (
     <div className="flex flex-col h-full justify-between">
-      <div>
-        <div className="text-center mb-6 border-b border-black/10 pb-4">
+      <div className="flex flex-col flex-grow overflow-hidden">
+        <div className="text-center mb-4 border-b border-black/10 pb-3 shrink-0">
           <h3 className="font-serif text-2xl md:text-3xl text-[#3e2714] tracking-tight relative inline-block">
-            Artisanal Pizzas
+            Artisanal Mains & Combos
           </h3>
-          <p className="text-[10px] uppercase tracking-[0.2em] font-mono text-[#8c5a3c] font-bold mt-1.5">Page 1 • Wood Fired Neapolitan</p>
+          <p className="text-[10px] uppercase tracking-[0.2em] font-mono text-[#8c5a3c] font-bold mt-1">Page 1 • Oven Pizzas, Pasta & Feast</p>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-4 overflow-y-auto pr-1 flex-grow scrollbar-thin" style={{ maxHeight: '420px' }}>
           {pizzas.map((pizza) => (
             <div 
               key={pizza.id}
@@ -146,8 +146,8 @@ function PizzaPageContent({ pizzas, onSelectItem }: { pizzas: MenuItem[], onSele
                   <h4 className="font-serif text-sm md:text-base font-bold text-[#3e2714] group-hover:text-burgundy truncate">
                     {pizza.name}
                   </h4>
-                  <span className="font-sans font-bold text-xs text-burgundy ml-1">
-                    ${pizza.price.toFixed(2)}
+                  <span className="font-sans font-bold text-xs text-burgundy ml-1 whitespace-nowrap">
+                    RM {pizza.price.toFixed(2)}
                   </span>
                 </div>
                 <p className="text-[10px] md:text-xs text-[#3e2714]/80 line-clamp-2 mt-1">
@@ -158,7 +158,7 @@ function PizzaPageContent({ pizzas, onSelectItem }: { pizzas: MenuItem[], onSele
           ))}
         </div>
       </div>
-      <div className="text-center pt-4 border-t border-black/10 mt-4">
+      <div className="text-center pt-4 border-t border-black/10 mt-4 shrink-0">
         <span className="font-mono text-xs text-black/40">Page 1</span>
       </div>
     </div>
@@ -168,61 +168,63 @@ function PizzaPageContent({ pizzas, onSelectItem }: { pizzas: MenuItem[], onSele
 function CoffeePageContent({ coffees, pastries, onSelectItem }: { coffees: MenuItem[], pastries: MenuItem[], onSelectItem: (item: MenuItem) => void }) {
   return (
     <div className="flex flex-col h-full justify-between">
-      <div>
-        <div className="text-center mb-4 border-b border-black/10 pb-4">
+      <div className="flex flex-col flex-grow overflow-hidden">
+        <div className="text-center mb-4 border-b border-black/10 pb-3 shrink-0">
           <h3 className="font-serif text-2xl md:text-3xl text-[#3e2714] tracking-tight relative inline-block">
             Third-Wave Sips & Sweets
           </h3>
-          <p className="text-[10px] uppercase tracking-[0.2em] font-mono text-[#8c5a3c] font-bold mt-1.5">Page 2 • Specialty Brews & Bakeries</p>
+          <p className="text-[10px] uppercase tracking-[0.2em] font-mono text-[#8c5a3c] font-bold mt-1">Page 2 • Specialty Brews & Bakeries</p>
         </div>
 
-        <div className="mb-4">
-          <h4 className="font-serif text-xs uppercase tracking-wider font-bold text-[#6a493a] border-b border-black/10 pb-1 mb-2 flex items-center gap-1.5">
-            <Coffee className="w-3.5 h-3.5 text-[#8c5a3c]" /> Specialty Coffees
-          </h4>
-          <div className="space-y-2">
-            {coffees.map((coffee) => (
-              <div 
-                key={coffee.id}
-                onClick={(e) => { e.stopPropagation(); onSelectItem(coffee); }}
-                className="group cursor-pointer hover:bg-black/5 p-1 rounded-sm transition-all duration-200 relative z-30"
-              >
-                <div className="flex justify-between items-baseline text-[#3e2714] font-serif text-sm">
-                  <span className="font-bold group-hover:text-burgundy">{coffee.name}</span>
-                  <span className="font-sans font-bold text-xs text-burgundy">${coffee.price.toFixed(2)}</span>
+        <div className="space-y-6 overflow-y-auto pr-1 flex-grow scrollbar-thin" style={{ maxHeight: '420px' }}>
+          <div>
+            <h4 className="font-serif text-xs uppercase tracking-wider font-bold text-[#6a493a] border-b border-black/10 pb-1 mb-2 flex items-center gap-1.5 sticky top-0 bg-[#fcf8f0] z-10 pt-1">
+              <Coffee className="w-3.5 h-3.5 text-[#8c5a3c]" /> Specialty Drinks
+            </h4>
+            <div className="space-y-2">
+              {coffees.map((coffee) => (
+                <div 
+                  key={coffee.id}
+                  onClick={(e) => { e.stopPropagation(); onSelectItem(coffee); }}
+                  className="group cursor-pointer hover:bg-black/5 p-1 rounded-sm transition-all duration-200 relative z-30"
+                >
+                  <div className="flex justify-between items-baseline text-[#3e2714] font-serif text-sm">
+                    <span className="font-bold group-hover:text-burgundy">{coffee.name}</span>
+                    <span className="font-sans font-bold text-xs text-burgundy">RM {coffee.price.toFixed(2)}</span>
+                  </div>
+                  <p className="text-[10px] text-[#3e2714]/70 font-sans italic mt-0.5 truncate">
+                    {coffee.description}
+                  </p>
                 </div>
-                <p className="text-[10px] text-[#3e2714]/70 font-sans italic mt-0.5 truncate">
-                  {coffee.description}
-                </p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
 
-        <div>
-          <h4 className="font-serif text-xs uppercase tracking-wider font-bold text-[#6a493a] border-b border-black/10 pb-1 mb-2">
-            🌸 Baked Pastries
-          </h4>
-          <div className="grid grid-cols-2 gap-2">
-            {pastries.map((pastry) => (
-              <div 
-                key={pastry.id}
-                onClick={(e) => { e.stopPropagation(); onSelectItem(pastry); }}
-                className="p-2 rounded bg-white/50 border border-black/5 hover:shadow-sm cursor-pointer transition-all duration-300 relative z-30"
-              >
-                <div className="w-full h-12 rounded-sm overflow-hidden mb-1">
-                  <img src={pastry.image} alt={pastry.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+          <div>
+            <h4 className="font-serif text-xs uppercase tracking-wider font-bold text-[#6a493a] border-b border-black/10 pb-1 mb-2 sticky top-0 bg-[#fcf8f0] z-10 pt-1">
+              🌸 Handcrafted Baked Pastries & Cakes
+            </h4>
+            <div className="grid grid-cols-2 gap-2">
+              {pastries.map((pastry) => (
+                <div 
+                  key={pastry.id}
+                  onClick={(e) => { e.stopPropagation(); onSelectItem(pastry); }}
+                  className="p-2 rounded bg-white/50 border border-black/5 hover:shadow-sm cursor-pointer transition-all duration-300 relative z-30"
+                >
+                  <div className="w-full h-12 rounded-sm overflow-hidden mb-1">
+                    <img src={pastry.image} alt={pastry.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                  </div>
+                  <h5 className="font-serif text-[11px] font-bold text-[#3e2714] truncate">{pastry.name}</h5>
+                  <div className="mt-1 flex justify-between items-center">
+                    <span className="font-sans font-bold text-[10px] text-burgundy">RM {pastry.price.toFixed(2)}</span>
+                  </div>
                 </div>
-                <h5 className="font-serif text-[11px] font-bold text-[#3e2714] truncate">{pastry.name}</h5>
-                <div className="mt-1 flex justify-between items-center">
-                  <span className="font-sans font-bold text-[10px] text-burgundy">${pastry.price.toFixed(2)}</span>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>
-      <div className="text-center pt-4 border-t border-black/10 mt-4">
+      <div className="text-center pt-4 border-t border-black/10 mt-4 shrink-0">
         <span className="font-mono text-xs text-black/40">Page 2</span>
       </div>
     </div>
